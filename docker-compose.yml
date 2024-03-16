@@ -1,5 +1,6 @@
 services:
     laravel.test:
+        container_name: short-url-laravel
         build:
             context: ./vendor/laravel/sail/runtimes/8.3
             dockerfile: Dockerfile
@@ -25,6 +26,7 @@ services:
             - mysql
             - redis
     mysql:
+        container_name: short-url-mysql
         image: 'mysql/mysql-server:8.0'
         ports:
             - '${FORWARD_DB_PORT:-3306}:3306'
@@ -49,6 +51,7 @@ services:
             retries: 3
             timeout: 5s
     redis:
+        container_name: short-url-redis
         image: 'redis:alpine'
         ports:
             - '${FORWARD_REDIS_PORT:-6379}:6379'
