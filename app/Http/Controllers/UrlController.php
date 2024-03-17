@@ -4,22 +4,25 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
+use App\Repositories\UrlMapRepository;
 use Exception;
-use App\Models\UrlMap;
 use Illuminate\Routing\Redirector;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Http\RedirectResponse;
 use App\Http\Requests\StoreUrlRequest;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class UrlController extends Controller
 {
+    public function __construct(private readonly UrlMapRepository $urlMapRepository)
+    {
+    }
+
     public function store(StoreUrlRequest $request): RedirectResponse|Redirector
     {
         $url = $request->validated('url');
 
-        $urlMap = UrlMap::where('url', $url)->first();
+        $urlMap = $this->urlMapRepository->findByUrl($url);
 
         if ($urlMap !== null) {
             return redirect()->route('short-urls.show', $urlMap->id);
@@ -28,16 +31,7 @@ class UrlController extends Controller
         DB::beginTransaction();
 
         try {
-            // TODO: refactor DB lock to programmatic lock using Redis
-            $urlMap = UrlMap::whereNull('url')
-                ->whereNotNull('short_url')
-                ->limit(1)
-                ->lockForUpdate()
-                ->first();
-
-            if ($urlMap === null) {
-                throw new NotFoundHttpException('No short URL available');
-            }
+            $urlMap = $this->urlMapRepository->findUnused();
         } catch (Exception $exception) {
             return $this->handleException($exception, 'We are running out of short URLs !');
         }
