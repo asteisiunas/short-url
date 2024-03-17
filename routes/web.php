@@ -19,3 +19,13 @@ Route::get('/short-urls/{urlMap}', function(UrlMap $urlMap) {
 })->name('short-urls.show');
 
 Route::post('/short-urls', [UrlController::class, 'store'])->name('short-urls.store');
+
+Route::get('/short/{hash}', function(string $hash) {
+    $urlMap = UrlMap::where('short_url', $hash)->first();
+
+    if ($urlMap === null || $urlMap->url === null) {
+        abort(404);
+    }
+
+    return redirect()->away($urlMap->url);
+})->name('short-urls.redirect');
