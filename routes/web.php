@@ -27,5 +27,7 @@ Route::get('/short/{hash}', function(string $hash) {
         abort(404);
     }
 
+    // TODO: good place for usage analytics
+
     return redirect()->away($urlMap->url);
 })->name('short-urls.redirect');
