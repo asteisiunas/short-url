@@ -6,11 +6,11 @@ namespace App\Services;
 
 class NumberBaseConverter
 {
-    private static string $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    private static string $characters = '0123456789abcdefghijklmnopqrstuvwxyz';
 
     public function convertDecimal(int $decimalNumber): string
     {
-        $base = 62; // hard-coded just for simplicity. This way I don't need to validate $base argument value here
+        $base = strlen(self::$characters); // hard-coded just for simplicity. This way I don't need to validate $base argument value here
 
         if ($decimalNumber === 0) {
             return self::$characters[0];

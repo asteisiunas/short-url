@@ -24,6 +24,6 @@ class ShortUrlFillerTest extends TestCase
         $urlMap = new UrlMap();
         $urlMap->id = 1000;
         $this->shortUrlFiller->fill($urlMap);
-        $this->assertSame('0000g8', $urlMap->short_url);
+        $this->assertSame('0000rs', $urlMap->short_url);
     }
 }

@@ -19,7 +19,7 @@ class NumberBaseConverterTest extends TestCase
     /**
      * @dataProvider provideData
      */
-    public function testConvertDecimal(string $decimal, string $result): void
+    public function testConvertDecimal(int $decimal, string $result): void
     {
         $this->assertEquals($result, $this->numberBaseConverter->convertDecimal($decimal));
     }
@@ -27,8 +27,8 @@ class NumberBaseConverterTest extends TestCase
     public static function provideData(): array
     {
         return [
-            ['decimal' => '1', 'result' => '01'],
-            ['decimal' => '1000', 'result' => '0g8'],
+            ['decimal' => 1, 'result' => '01'],
+            ['decimal' => 1000, 'result' => '0rs'],
         ];
     }
 }
