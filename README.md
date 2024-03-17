@@ -26,6 +26,13 @@ Laravel Sail is used for simplicity
 ### Run
 
 ```bash
-./vendor/bin/sail up -d
+vendor/bin/sail up -d
 ```
 
+```bash
+vendor/bin/sail artisan migrate
+```
+
+```bash
+vendor/bin/sail artisan migrate --env=testing
+```
