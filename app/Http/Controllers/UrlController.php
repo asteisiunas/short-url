@@ -19,10 +19,21 @@ class UrlController extends Controller
     {
         $url = $request->validated('url');
 
+        $urlMap = UrlMap::where('url', $url)->first();
+
+        if ($urlMap !== null) {
+            return redirect()->route('short-urls.show', $urlMap->id);
+        }
+
         DB::beginTransaction();
 
         try {
-            $urlMap = UrlMap::whereNull('url')->lockForUpdate()->first();
+            // TODO: refactor DB lock to programmatic lock using Redis
+            $urlMap = UrlMap::whereNull('url')
+                ->whereNotNull('short_url')
+                ->limit(1)
+                ->lockForUpdate()
+                ->first();
 
             if ($urlMap === null) {
                 throw new NotFoundHttpException('No short URL available');
