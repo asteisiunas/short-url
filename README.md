@@ -37,10 +37,6 @@ vendor/bin/sail artisan migrate
 vendor/bin/sail artisan migrate --env=testing
 ```
 
-```bash
-vendor/bin/sail artisan app:generate-url-maps 1000
-```
-
 Navigate to http://localhost/short-urls to add URL which will be mapped to short url
 
 ### Test
